@@ -49,9 +49,9 @@
             ];
           };
           craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
-          pkg = pkgs.callPackage ./package.nix { inherit craneLib rustToolchain; };
+          files-to-prompt = pkgs.callPackage ./package.nix { inherit craneLib rustToolchain; };
           overlay = final: prev: {
-            files-to-prompt = pkg;
+            files-to-prompt = files-to-prompt;
           };
         in
         {
@@ -78,9 +78,9 @@
           #   files-to-prompt = overlay;
           # };
           overlayAttrs = {
-            inherit (config.packages) pkg;
+            inherit (config.packages) files-to-prompt;
           };
-          packages.default = pkg;
+          packages.default = files-to-prompt;
         };
     };
 }
