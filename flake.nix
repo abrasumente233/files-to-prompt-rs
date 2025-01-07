@@ -41,13 +41,17 @@
             ];
           };
           craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
+          pkg = pkgs.callPackage ./package.nix { inherit craneLib rustToolchain; };
+          overlay = final: prev: {
+            files-to-prompt = pkg;
+          };
         in
         {
           _module.args.pkgs = import inputs.nixpkgs {
             inherit system;
             overlays = [ (import inputs.rust-overlay) ];
           };
-          packages.default = pkgs.callPackage ./package.nix { inherit craneLib rustToolchain; };
+
           devenv.shells.default =
             let
               isDarwin = pkgs.lib.strings.hasSuffix "-darwin" system;
@@ -60,6 +64,12 @@
                   pkgs.libiconv
                 ];
             };
+
+          packages.default = pkg;
+          overlays = {
+            default = overlay;
+            files-to-prompt = overlay;
+          };
         };
     };
 }
