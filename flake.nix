@@ -9,12 +9,13 @@
         nixpkgs.follows = "nixpkgs";
       };
     };
-    crane = {
-      url = "github:ipetkov/crane";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
+    crane.url = "github:ipetkov/crane";
+    # crane = {
+    #   url = "github:ipetkov/crane";
+    #   inputs = {
+    #     nixpkgs.follows = "nixpkgs";
+    #   };
+    # };
   };
 
   outputs =
@@ -47,7 +48,7 @@
               "rust-analyzer"
             ];
           };
-          craneLib = crane.lib.${system}.overrideToolchain rustToolchain;
+          craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
 
         in
         {
