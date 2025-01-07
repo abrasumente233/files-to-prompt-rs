@@ -10,6 +10,11 @@
       };
     };
     crane.url = "github:ipetkov/crane";
+    nix2container.url = "github:nlewo/nix2container";
+    nix2container.inputs = {
+      nixpkgs.follows = "nixpkgs";
+    };
+    mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
   };
 
   outputs =
@@ -22,11 +27,13 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
         inputs.devenv.flakeModule
+        inputs.flake-parts.flakeModules.easyOverlay
       ];
       systems = nixpkgs.lib.systems.flakeExposed;
 
       perSystem =
         {
+          config,
           lib,
           pkgs,
           system,
@@ -65,11 +72,14 @@
                 ];
             };
 
-          packages.default = pkg;
-          overlays = {
-            default = overlay;
-            files-to-prompt = overlay;
+          # overlays = {
+          #   default = overlay;
+          #   files-to-prompt = overlay;
+          # };
+          overlayAttrs = {
+            inherit (config.packages) pkg;
           };
+          packages.default = pkg;
         };
     };
 }
