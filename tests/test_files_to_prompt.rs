@@ -13,7 +13,7 @@ fn test_basic_functionality() {
     fs::write(test_dir.join("file1.txt"), "Contents of file1").unwrap();
     fs::write(test_dir.join("file2.txt"), "Contents of file2").unwrap();
 
-    let mut cmd = Command::cargo_bin("files-to-prompt").unwrap();
+    let mut cmd = Command::cargo_bin("files_to_prompt").unwrap();
     let assert = cmd.arg(test_dir.to_str().unwrap()).assert();
 
     assert.success().stdout(
@@ -33,7 +33,7 @@ fn test_include_hidden() {
     fs::write(test_dir.join(".hidden.txt"), "Contents of hidden file").unwrap();
 
     // Default (no --include-hidden)
-    let mut cmd = Command::cargo_bin("files-to-prompt").unwrap();
+    let mut cmd = Command::cargo_bin("files_to_prompt").unwrap();
     let assert = cmd.arg(test_dir.to_str().unwrap()).assert();
 
     // Should NOT contain hidden file
@@ -42,7 +42,7 @@ fn test_include_hidden() {
         .stdout(predicate::str::contains(".hidden.txt").not());
 
     // Now with --include-hidden
-    let mut cmd = Command::cargo_bin("files-to-prompt").unwrap();
+    let mut cmd = Command::cargo_bin("files_to_prompt").unwrap();
     let assert = cmd
         .args([test_dir.to_str().unwrap(), "--include-hidden"])
         .assert();
@@ -64,7 +64,7 @@ fn test_ignore_gitignore() {
     fs::write(test_dir.join("included.txt"), "This file should be included").unwrap();
 
     // Normal run: .gitignore is respected
-    let mut cmd = Command::cargo_bin("files-to-prompt").unwrap();
+    let mut cmd = Command::cargo_bin("files_to_prompt").unwrap();
     let assert = cmd.arg(test_dir.to_str().unwrap()).assert();
     assert.success().stdout(
         predicate::str::contains("ignored.txt").not().and(
@@ -74,7 +74,7 @@ fn test_ignore_gitignore() {
     );
 
     // With --ignore-gitignore
-    let mut cmd = Command::cargo_bin("files-to-prompt").unwrap();
+    let mut cmd = Command::cargo_bin("files_to_prompt").unwrap();
     let assert = cmd
         .args([test_dir.to_str().unwrap(), "--ignore-gitignore"])
         .assert();
@@ -98,7 +98,7 @@ fn test_multiple_paths() {
     fs::write(test_dir2.join("file2.txt"), "Contents of file2").unwrap();
     fs::write(tmp.path().join("single_file.txt"), "Contents of single file").unwrap();
 
-    let mut cmd = Command::cargo_bin("files-to-prompt").unwrap();
+    let mut cmd = Command::cargo_bin("files_to_prompt").unwrap();
     let assert = cmd
         .args([
             test_dir1.to_str().unwrap(),
@@ -135,7 +135,7 @@ fn test_ignore_patterns() {
     .unwrap();
 
     // ignoring all *.txt
-    let mut cmd = Command::cargo_bin("files-to-prompt").unwrap();
+    let mut cmd = Command::cargo_bin("files_to_prompt").unwrap();
     let assert = cmd
         .args([test_dir.to_str().unwrap(), "--ignore", "*.txt"])
         .assert();
@@ -147,7 +147,7 @@ fn test_ignore_patterns() {
     );
 
     // ignoring only file_to_ignore.*
-    let mut cmd = Command::cargo_bin("files-to-prompt").unwrap();
+    let mut cmd = Command::cargo_bin("files_to_prompt").unwrap();
     let assert = cmd
         .args([test_dir.to_str().unwrap(), "--ignore", "file_to_ignore.*"])
         .assert();
@@ -177,7 +177,7 @@ fn test_specific_extensions() {
     .unwrap();
 
     // Only .py and .md
-    let mut cmd = Command::cargo_bin("files-to-prompt").unwrap();
+    let mut cmd = Command::cargo_bin("files_to_prompt").unwrap();
     let assert = cmd
         .args([
             tmp.path().join("test_dir").to_str().unwrap(),
@@ -208,7 +208,7 @@ fn test_binary_file_warning() {
     fs::write(test_dir.join("binary_file.bin"), vec![0xff, 0x00, 0x12]).unwrap();
     fs::write(test_dir.join("text_file.txt"), "This is a text file").unwrap();
 
-    let mut cmd = Command::cargo_bin("files-to-prompt").unwrap();
+    let mut cmd = Command::cargo_bin("files_to_prompt").unwrap();
     let assert = cmd.arg(test_dir.to_str().unwrap()).assert();
 
     // We expect to see the text file, but not the binary file
@@ -234,7 +234,7 @@ fn test_xml_format_dir() {
     fs::write(test_dir.join("file1.txt"), "Contents of file1.txt").unwrap();
     fs::write(test_dir.join("file2.txt"), "Contents of file2.txt").unwrap();
 
-    let mut cmd = Command::cargo_bin("files-to-prompt").unwrap();
+    let mut cmd = Command::cargo_bin("files_to_prompt").unwrap();
     let assert = cmd
         .args([test_dir.to_str().unwrap(), "--cxml"])
         .assert()
@@ -263,7 +263,7 @@ fn test_output_option() {
 
     let output_path = tmp.path().join("output.txt");
 
-    let mut cmd = Command::cargo_bin("files-to-prompt").unwrap();
+    let mut cmd = Command::cargo_bin("files_to_prompt").unwrap();
     let assert = cmd
         .args([
             test_dir.to_str().unwrap(),
