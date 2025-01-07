@@ -1,7 +1,7 @@
 use std::error::Error;
 use std::fs;
 use std::io::{self, Write};
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 use walkdir::WalkDir;
 
