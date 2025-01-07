@@ -10,12 +10,6 @@
       };
     };
     crane.url = "github:ipetkov/crane";
-    # crane = {
-    #   url = "github:ipetkov/crane";
-    #   inputs = {
-    #     nixpkgs.follows = "nixpkgs";
-    #   };
-    # };
   };
 
   outputs =
@@ -40,8 +34,6 @@
         }:
 
         let
-          # rustToolchain = pkgs.rust-bin.stable.latest.default;
-
           rustToolchain = pkgs.rust-bin.stable.latest.default.override {
             extensions = [
               "rust-src"
@@ -49,7 +41,6 @@
             ];
           };
           craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
-
         in
         {
           _module.args.pkgs = import inputs.nixpkgs {
