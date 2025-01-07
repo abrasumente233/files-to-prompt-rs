@@ -1,5 +1,5 @@
 [package]
-name = "files_to_prompt"
+name = "files-to-prompt"
 version = "0.1.0"
 edition = "2021"
 
