@@ -148,7 +148,7 @@ fn process_single_file(
     _extensions: &[String],
     _include_hidden: bool,
     _ignore_gitignore: bool,
-    _gitignore_rules: &mut Vec<String>,
+    _gitignore_rules: &mut [String],
     _ignore_patterns: &[String],
     claude_xml: bool,
 ) -> Result<(), Box<dyn Error>> {
