@@ -3,20 +3,9 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
-    # rust
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
-      };
-    };
-    crane = {
-      url = "github:ipetkov/crane";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
+    rust-overlay.url = "github:oxalica/rust-overlay";
+    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    crane.url = "github:ipetkov/crane";
   };
   outputs =
     {
@@ -38,15 +27,12 @@
         craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
 
         files-to-prompt = pkgs.callPackage ./package.nix { inherit craneLib rustToolchain system; };
-
-        overlay = final: prev: {
-          files-to-prompt = files-to-prompt;
-        };
       in
       with pkgs;
       {
-        overlays.default = overlay;
-        overlays.files-to-prompt = overlay;
+        overlays = final: prev: {
+          files-to-prompt = files-to-prompt;
+        };
 
         packages.default = files-to-prompt;
         packages.files-to-prompt = files-to-prompt;
